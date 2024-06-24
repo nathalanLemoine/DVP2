@@ -28,15 +28,15 @@ jobs:
       with:
         context: .
         push: true
-        tags: <your-dockerhub-username>/my-app:latest
+        tags: nathalanlemoine/my-app:latest
 
     - name: Deploy to Server
       run: |
         ssh user@your-server-ip <<EOF
-        docker pull <your-dockerhub-username>/my-app:latest
+        docker pull nathalanlemoine/my-app:latest
         docker stop my-app || true
         docker rm my-app || true
-        docker run -d -p 3000:3000 --name my-app <your-dockerhub-username>/my-app:latest
+        docker run -d -p 3000:3000 --name my-app nathalanlemoine/my-app:latest
         EOF
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
