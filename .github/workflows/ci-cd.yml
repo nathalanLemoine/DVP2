@@ -35,7 +35,7 @@ jobs:
 
       - name: Deploy to Server
         run: |
-          ssh -o StrictHostKeyChecking=no user@your-server-ip <<EOF
+          ssh -o StrictHostKeyChecking=no dockervm@192.168.10.151 <<EOF
           docker pull nathalanlemoine/my-app:latest
           docker stop my-app || true
           docker rm my-app || true
