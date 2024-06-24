@@ -34,12 +34,14 @@ jobs:
           tags: nathalanlemoine/my-app:latest
 
       - name: Deploy to Server
-        run: |
-          sshpass -p "nathalan" ssh -i private_key.pem -T -o StrictHostKeyChecking=no NATHALAN@10.3.101.177 <<EOF
-          docker pull nathalanlemoine/my-app:latest
-          docker stop my-app || true
-          docker rm my-app || true
-          docker run -d -p 3000:3000 --name my-app nathalanlemoine/my-app:latest
-          EOF
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          echo "${SSH_PRIVATE_KEY}" > private_key.pem
+          chmod 600 private_key.pem
+          ssh -i private_key.pem -o StrictHostKeyChecking=no NATHALAN@10.3.101.177 <<EOF
+            docker pull nathalanlemoine/my-app:latest
+            docker stop my-app || true
+            docker rm my-app || true
+            docker run -d -p 3000:3000 --name my-app nathalanlemoine/my-app:latest
+          EOF
